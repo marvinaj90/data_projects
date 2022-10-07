@@ -37,7 +37,8 @@ for file_name in filter_list:
 source = "./citibike/data_files/"
 
 def unzip(directory):
-'''Function to unzip files in specified directory'''
+
+'''Function to unzip files in specified file directory'''
 
     for file in os.listdir(directory):
         if file.endswith('.zip'):
