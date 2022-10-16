@@ -26,11 +26,11 @@ ORDER BY 2
 
 /*Compares average trip length for rides that start and end at the same station
 with those that end at a different station */
-SELECT ROUND(avg(tripduration_sec)/60) AS AVG_MINUTES, count(*) as num_rides, 'SAME' AS DESTINATION
+SELECT ROUND(avg(tripduration_sec)/60) AS avg_minutes, count(*) as num_rides, 'SAME' AS destination
 FROM bike_trips
 WHERE start_station_id=end_station_id and EXTRACT(DOW from start_time) between 1 and 5
 UNION
-SELECT ROUND(avg(tripduration_sec)/60) AS AVG_MINUTES, count(*) as num_rides, 'DIFFERENT' AS DESTINATION
+SELECT ROUND(avg(tripduration_sec)/60) AS avg_minutes, count(*) as num_rides, 'DIFFERENT' AS destination
 FROM bike_trips
 WHERE start_station_id<>end_station_id and EXTRACT(DOW from start_time) between 1 and 5
 
