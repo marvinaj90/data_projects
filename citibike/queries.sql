@@ -33,3 +33,16 @@ UNION
 SELECT ROUND(avg(tripduration_sec)/60) AS AVG_MINUTES, count(*) as num_rides, 'DIFFERENT' AS DESTINATION
 FROM bike_trips
 WHERE start_station_id<>end_station_id and EXTRACT(DOW from start_time) between 1 and 5
+
+
+/*Query to find the most active time and day for Subscribers and Customers */
+WITH t1 as (SELECT usertype, extract(dow from start_time) as dayof_week,
+			extract('hour' from start_time) as start_hr, COUNT(*) AS total_rides,
+			Rank() over(PARTITION BY usertype order BY count(*) desc) as total_rank
+FROM bike_trips
+GROUP BY 1,2,3
+)
+/*The above query ranks the count of riders split over the two groups of users*/
+SELECT usertype, dayof_week, start_hr, total_rides, total_rank
+FROM t1
+WHERE total_rank = 1
