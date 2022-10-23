@@ -20,8 +20,4 @@ df = combined.rename(columns={'tripduration':'tripduration_sec',
                     'end station longitude':'end_longitude',
                     'birth year':'birth_year'},index=None)
 
-# Fill NA values as 0 so we can drop them later
-df_fill= df.fillna(0)
-df_fill.isnull().sum().sum()
-
-df_fill.to_csv('./citibike/data_files/2019_tripdata.csv',index=False)
+df.to_csv('./citibike/data_files/2019_tripdata.csv',index=False)
