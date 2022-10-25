@@ -5,13 +5,18 @@ with t_1 as (SELECT *, CASE
             WHEN gender = 2 THEN 'female'
             END AS sex
             FROM bike_trips)
-
 /*Aggregates the total riders by gender using previous CTE*/
 SELECT sex, COUNT(total) as total_gender
 FROM t_1
 GROUP BY 1
 
 /* Query to aggrergate the users by gender for each month*/
+with t_1 as (SELECT *, CASE
+            WHEN gender = 0 THEN 'unknown'
+            WHEN gender = 1 THEN 'male'
+            WHEN gender = 2 THEN 'female'
+            END AS sex
+            FROM bike_trips)
 SELECT sex, DATE_TRUNC('month',start_time) AS months, COUNT(sex) AS total
 FROM t_1
 GROUP BY 1,2
