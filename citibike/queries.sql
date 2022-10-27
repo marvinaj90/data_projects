@@ -5,7 +5,6 @@ with t_1 as (SELECT *, CASE
             WHEN gender = 2 THEN 'female'
             END AS sex
             FROM bike_trips)
-/*Aggregates the total riders by gender using previous CTE*/
 SELECT sex, COUNT(total) as total_gender
 FROM t_1
 GROUP BY 1
