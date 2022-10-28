@@ -42,11 +42,19 @@ WHERE start_station_id<>end_station_id and EXTRACT(DOW from start_time) between 
 /*Query to find the most active time and day for Subscribers and Customers */
 WITH t1 as (SELECT usertype, extract(dow from start_time) as dayof_week,
 			extract('hour' from start_time) as start_hr, COUNT(*) AS total_rides,
-			Rank() over(PARTITION BY usertype order BY count(*) desc) as total_rank
+			Rank() OVER(PARTITION BY usertype order BY count(*) desc) as total_rank
 FROM bike_trips
-GROUP BY 1,2,3
-)
-/*The above query ranks the count of riders split over the two groups of users*/
+GROUP BY 1,2,3)
+/*The above query ranks the count of riders split over the two groups of users
+then it is filtered by rank*/
 SELECT usertype, dayof_week, start_hr, total_rides, total_rank
 FROM t1
 WHERE total_rank = 1
+
+/* Counts the users for each type by station */
+SELECT start_station_name,COUNT(CASE WHEN usertype = 'Subscriber' THEN usertype END) as subscriber_count,
+      COUNT(CASE WHEN usertype = 'Customer' THEN usertype END) as customer_count
+FROM bike_trips
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10
